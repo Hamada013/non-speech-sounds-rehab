@@ -1,0 +1,19 @@
+{
+  "name": "non-speech-sounds-rehab",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-pwa.cjs",
+    "stage": "node scripts/stage-site.cjs",
+    "build:icons": "python3 scripts/build-icons.py",
+    "test": "node tests/static.cjs",
+    "test:links": "node tests/one-way-links.cjs",
+    "test:browser": "node tests/redesign-browser.cjs",
+    "test:legacy": "node tests/browser.cjs",
+    "test:audio": "node tests/native.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  },
+  "version": "1.0.0"
+}

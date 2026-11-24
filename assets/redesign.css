@@ -1,0 +1,118 @@
+/* أصوات من حولي, 2026-11 redesign (shared with أصواتي العربية). Loaded last: one Arabic font everywhere, the new home (today's two sounds, the
+ * road, one big «ابدأ»), the road bar during the route, calmer picture cards and the card-glow reward. */
+:root {
+  --as-ink: #163247; --as-muted: #4b6478; --as-line: #e5e1d8; --as-card: #ffffff; --as-cream: #fffaf2;
+  --as-start: #c2410c; --as-start-hi: #ea580c; --as-blue: #0369a1; --as-green: #15803d; --as-amber: #b45309;
+  --as-shadow: 0 1px 2px rgb(22 50 71 / 6%), 0 8px 24px rgb(22 50 71 / 8%);
+  --as-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ---- Type: Cairo (bundled) on every control and dialog, never negative tracking on Arabic ---- */
+body, button, input, select, textarea, dialog, .sound-dialog, .game-header.suite-toolbar, .app-home-shell {
+  font-family: Cairo, system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+}
+:is(h1, h2, h3, p, b, span, a, button, small, strong) { letter-spacing: normal; }
+html body, html body.app-home-shell { background: radial-gradient(ellipse at 90% 0%, #fff1dc 0, transparent 45%), radial-gradient(ellipse at 0% 100%, #e6f6ef 0, transparent 45%), var(--as-cream); color: var(--as-ink); }
+
+/* Reports are for the therapist: the report button shows only while the lock is open. */
+body:not(.therapist-on) [data-suite-control="report"] { display: none !important; }
+
+/* ---- Home ---- */
+body[data-screen="home"] .app-home-brand { display: none; }
+body[data-screen="home"] .app-home-bar { justify-content: flex-end; }
+#workspace .as-home { width: 100%; max-width: 640px; margin: 0 auto; padding: 4px 16px 24px; display: grid; gap: 22px; text-align: center; }
+.as-hero { display: flex; align-items: center; justify-content: center; gap: 14px; text-align: start; }
+.as-logo { flex: none; width: 76px; height: 76px; padding: 0; border: 0; border-radius: 24px; background: #fff; box-shadow: var(--as-shadow); cursor: pointer; overflow: hidden; }
+.as-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.as-hero h1 { margin: 0; font-size: clamp(26px, 6vw, 34px); font-weight: 800; line-height: 1.3; color: var(--as-ink); }
+.as-hero p { margin: 2px 0 0; font-size: 16px; line-height: 1.5; color: var(--as-muted); }
+
+.as-pair { display: grid; gap: 12px; justify-items: center; }
+.as-pair h2 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.4; color: var(--as-muted); }
+.as-pair-cards { display: flex; gap: 16px; justify-content: center; width: 100%; }
+.as-pair-card { position: relative; width: min(42vw, 190px); aspect-ratio: 4 / 5; padding: 12px 12px 8px; border: 2px solid var(--as-line); border-radius: 28px; background: var(--as-card);
+  box-shadow: var(--as-shadow); display: grid; grid-template-rows: 1fr auto; align-items: center; justify-items: center; cursor: pointer; color: var(--as-ink);
+  transition: scale 150ms ease-out, border-color 150ms ease-out, box-shadow 200ms ease-out; }
+.as-pair-card img { width: 100%; height: 100%; object-fit: contain; min-height: 0; }
+.as-pair-card b { font-size: clamp(34px, 8vw, 46px); font-weight: 800; line-height: 1.3; }
+.as-pair-card.cue { border-color: #38bdf8; box-shadow: 0 0 0 5px rgb(56 189 248 / 30%), var(--as-shadow); }
+.as-change { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 18px; border-radius: 999px; color: var(--as-blue); font-weight: 700; font-size: 17px; text-decoration: none; }
+.as-change svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* The road: five stops on one line, joined by a dotted path; reached stops turn green, the next one is orange. */
+.as-road, .road-bar { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); position: relative; }
+.as-road::before, .road-bar::before { content: ""; position: absolute; inset-inline: 10%; top: 28px; border-top: 3px dashed #d6cfc2; }
+.as-road li, .road-bar li { position: relative; display: grid; justify-items: center; gap: 6px; }
+.as-road span, .road-bar span { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #fff; border: 3px solid #d6cfc2; color: #8a8173; }
+.as-road svg, .road-bar svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.as-road b, .road-bar b { font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--as-muted); }
+.as-road li.done span, .road-bar li.done span { background: var(--as-green); border-color: var(--as-green); color: #fff; }
+.as-road li.next span, .road-bar li.now span { border-color: var(--as-start-hi); color: var(--as-start); box-shadow: 0 0 0 5px rgb(234 88 12 / 18%); }
+.as-road li.next b, .road-bar li.now b { color: var(--as-start); }
+.as-road li:last-child.done span { background: #f59e0b; border-color: #f59e0b; }
+
+.as-start { justify-self: center; display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-width: min(100%, 300px); min-height: 72px; padding: 0 36px;
+  border-radius: 999px; background: linear-gradient(180deg, var(--as-start-hi), var(--as-start)); color: #fff; font-size: 30px; font-weight: 800; line-height: 1.3; text-decoration: none;
+  box-shadow: 0 10px 24px rgb(194 65 12 / 30%); transition: scale 150ms ease-out, box-shadow 150ms ease-out; }
+.as-start svg { width: 30px; height: 30px; fill: currentColor; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; scale: -1 1; }
+.as-start:focus-visible, .as-pair-card:focus-visible, .as-more > :focus-visible, .as-change:focus-visible, .as-logo:focus-visible { outline: 3px solid var(--as-blue); outline-offset: 3px; }
+
+.as-more { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.as-more > a, .as-more > button { flex: 1 1 120px; max-width: 150px; min-height: 84px; display: grid; justify-items: center; align-content: center; gap: 4px; padding: 10px;
+  border: 1px solid var(--as-line); border-radius: 22px; background: var(--as-card); color: var(--as-ink); font: inherit; font-size: 16px; font-weight: 700; line-height: 1.4;
+  text-decoration: none; cursor: pointer; box-shadow: 0 1px 2px rgb(22 50 71 / 5%); transition: scale 150ms ease-out; }
+.as-more svg { width: 28px; height: 28px; fill: none; stroke: var(--as-blue); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.as-more .as-therapist { border-color: #c7d7f5; background: #f4f7ff; }
+.as-more .as-therapist svg { stroke: #6d28d9; }
+#workspace .app-home-footer { opacity: .75; }
+
+/* Press feedback: 0.96 for 150ms, never on disabled controls. */
+:is(.as-start, .as-pair-card, .as-more > a, .as-more > button, .as-logo, .picture):not(:disabled):active { scale: 0.96; }
+
+/* ---- Road bar while «المسار التلقائي» runs ---- */
+body.route-on .app-home-brand { visibility: hidden; }
+/* Centred on screen (physical left/translate on purpose: centring is the same in both directions). */
+.road-bar { position: fixed; z-index: 60; top: 8px; left: 50%; translate: -50% 0; width: min(420px, calc(100vw - 140px)); padding: 6px 8px; border-radius: 999px;
+  background: rgb(255 255 255 / 92%); box-shadow: var(--as-shadow); backdrop-filter: blur(6px); }
+.road-bar::before { top: 22px; }
+.road-bar span { width: 32px; height: 32px; border-width: 2px; }
+.road-bar svg { width: 17px; height: 17px; }
+.road-bar b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ---- Picture cards in the games ---- */
+.picture { border-radius: 26px; border-color: var(--as-line); box-shadow: 0 1px 2px rgb(22 50 71 / 6%), 0 6px 18px rgb(22 50 71 / 7%);
+  transition: scale 150ms ease-out, border-color 200ms ease-out, box-shadow 300ms var(--as-ease), background-color 200ms ease-out; }
+.picture.matched, .picture.wrong { background: #fff; }
+.picture.selected { border-color: var(--as-green); box-shadow: 0 0 0 4px rgb(21 128 61 / 22%); }
+
+/* The reward: a green glow on the right card, a soft amber ring for «try again». Colour always changes too. */
+.picture.reward-right { border-color: var(--as-green); background: #fff; box-shadow: 0 0 0 6px rgb(34 197 94 / 28%), 0 0 32px rgb(34 197 94 / 35%); }
+.picture.reward-retry { border-color: #d97706; background: #fff; box-shadow: 0 0 0 5px rgb(217 119 6 / 20%); }
+.reward-burst { position: fixed; z-index: 90; width: 0; height: 0; pointer-events: none; }
+.reward-burst i { position: absolute; left: 0; top: 0; width: 14px; height: 14px; border-radius: 50%; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .picture.reward-right { animation: as-glow 300ms var(--as-ease); }
+  .picture.reward-retry { animation: as-nudge 280ms ease-out; }
+  .as-road li { animation: as-stop 300ms ease-out both; animation-delay: calc(var(--i) * 100ms); }
+  .as-road li.next span { animation: as-breathe 2.4s ease-in-out infinite; }
+}
+@keyframes as-glow { from { scale: 1; } 50% { scale: 1.04; } to { scale: 1; } }
+@keyframes as-nudge { 0%, 100% { translate: 0; } 30% { translate: 5px; } 65% { translate: -4px; } }
+@keyframes as-stop { from { opacity: 0; translate: 0 12px; } to { opacity: 1; translate: 0; } }
+@keyframes as-breathe { 0%, 100% { box-shadow: 0 0 0 5px rgb(234 88 12 / 18%); } 50% { box-shadow: 0 0 0 9px rgb(234 88 12 / 10%); } }
+
+@media (max-width: 420px) {
+  .as-road span { width: 48px; height: 48px; }
+  .as-road::before { top: 24px; }
+  .as-road b { font-size: 14px; }
+  .as-start { font-size: 26px; min-height: 64px; }
+  .as-logo { width: 64px; height: 64px; }
+}
+@media (max-height: 760px) and (orientation: landscape) {
+  #workspace .as-home { gap: 14px; }
+  .as-pair-card { width: min(22vw, 150px); }
+}
+/* أصوات من حولي has six activities: three per row on wide screens, two on phones. */
+.as-more { max-width: 600px; margin-inline: auto; }
+.as-more > a, .as-more > button { flex: 1 1 160px; max-width: 190px; }
